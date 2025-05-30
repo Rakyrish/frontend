@@ -3,6 +3,12 @@ import Header from "./pages/header";
 import Home from "./pages/home";
 import Signup from "./auth/signup";
 import Login from "./auth/login";
+import View from "./pages/view";
+import Create from "./pages/create";
+import Update from "./pages/update";
+import Delete from "./pages/delete";
+import { UserProvider } from "./auth/context";
+
 
 // Component to handle routing and conditional Header rendering
 function MainApp() {
@@ -10,14 +16,22 @@ function MainApp() {
   const hideHeaderRoutes = ["/", "/login"];
 
   return (
-    <>
-      {!hideHeaderRoutes.includes(location.pathname) && <Header />}
+    <UserProvider>
+       {!hideHeaderRoutes.includes(location.pathname) && <Header />}
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/view" element={<View />} />
+        <Route path="/create" element={<Create/>} />
+        <Route path="/read" element={<Home />} />
+        <Route path="/update" element={<Update />} />
+        <Route path="/delete" element={<Delete />} />
         <Route path="/"  element={<Signup />} />
       </Routes>
-    </>
+    </UserProvider>
+
+     
+    
   );
 }
 
