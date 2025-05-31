@@ -14,7 +14,7 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
-  const {setusername} = useUser();
+  const {setuser} = useUser();
   
 
  
@@ -47,9 +47,16 @@ export default function Signup() {
         password2: confirmPassword,
       });
       setError('');
-      setSuccess('Signup successful! Redirecting to login...');
-      setusername(username);
-      setTimeout(() => navigate('/login'), 1000);
+      console.log('Signup response:', response.data);
+
+      if (response.ok) {
+      setSuccess(`Signup successful ${username} ! Redirecting to login...`);
+      setuser(username);
+        
+      }
+
+      
+      setTimeout(() => navigate('/home'), 1000);
     } catch (err) {
       console.error('Signup error:', err);
       setError(err.response?.data?.message || 'Signup failed. Please try again.');
@@ -142,16 +149,20 @@ export default function Signup() {
             error={error.includes('Password') || error.includes('All fields')}
             helperText={error.includes('Password') || error.includes('All fields') ? error : ''}
           />
-          <TextField
-            label="Email"
-            type="email"
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)} // Fixed typo from setUsername
-            sx={{ marginBottom: 2, width: '300px' }}
-            error={error.includes('email') || error.includes('All fields')}
-            helperText={error.includes('email') || error.includes('All fields') ? error : ''}
-          />
+         <TextField
+              label="Email"
+              type="email"
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              sx={{ marginBottom: 2, width: '300px' }}
+              error={error.includes('email') || error.includes('required')}
+              helperText={error.includes('email') || error.includes('required') ? error : ''}
+              InputProps={{
+                autoComplete: 'email', // Suggest email addresses
+              }}
+              name="email" // Ensure consistent field name
+            />
           <Button variant="contained" color="primary" onClick={signupB} sx={{ marginBottom: 2 }}>
             Signup
           </Button>
