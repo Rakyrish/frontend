@@ -13,10 +13,11 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isloading, setIsLoading] = useState(false)
   const navigate = useNavigate();
   const {setuser} = useUser();
   
-
+const API_URL = process.env.REACT_APP_API_URL;
  
 
 
@@ -40,7 +41,7 @@ export default function Signup() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8000/api/reg', {
+      const response = await axios.post(`${API_URL}/api/reg`, {
         username,
         email,
         password1: password,
@@ -48,7 +49,8 @@ export default function Signup() {
       });
       setError('');
       console.log('Signup response:', response.data);
-
+     setIsLoading(true)
+     
       if (response.ok) {
       setSuccess(`Signup successful ${username} ! Redirecting to login...`);
       setuser(username);
@@ -66,7 +68,7 @@ export default function Signup() {
   const handleGoogleSuccess = async (credentialResponse) => {
     console.log('Google token:', credentialResponse.credential);
     try {
-       await axios.post('http://localhost:8000/api/google-signup', {
+       await axios.post(`${API_URL} api/google-signup`, {
         token: credentialResponse.credential,
       });
       setError('');
@@ -164,8 +166,8 @@ export default function Signup() {
               }}
               name="email" // Ensure consistent field name
             />
-          <Button variant="contained" color="primary" onClick={signupB} sx={{ marginBottom: 2 }}>
-            Signup
+           <Button variant="contained" color="primary" onClick={signupB} sx={{ marginBottom: 2 }}>
+             {isloading ? "Signing..." : "Signup"} 
           </Button>
           <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Typography>Already have an account?</Typography>

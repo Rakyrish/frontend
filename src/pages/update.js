@@ -26,6 +26,7 @@ export default function Update() {
     const navigate = useNavigate();
     const timerRef = useRef();
 
+    const API_URL = process.env.REACT_APP_API_URL;
     
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
@@ -50,7 +51,7 @@ export default function Update() {
         setError(null);
         setSuccess(null);
         try {
-            const response = await axios.get(`http://localhost:8000/api/records/${recordId}/`, {
+            const response = await axios.get(`${API_URL}/api/records/${recordId}/`, {
                 withCredentials: true,
             });
             setTitle(response.data.title);
@@ -83,7 +84,7 @@ export default function Update() {
         try {
             const csrfToken = getCookie('csrftoken');
             await axios.put(
-                `http://localhost:8000/api/records/${recordId}/`,
+                `${API_URL}/api/records/${recordId}/`,
                 { title, body },
                 {
                     headers: {

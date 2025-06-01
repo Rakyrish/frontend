@@ -20,11 +20,13 @@ export default function View() {
     const { username } = useUser();
     console.log('Current username:', username); // Debugging line to check username
 
+    const API_URL = process.env.REACT_APP_API_URL;
+
     // Fetch posts from backend
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/records/', {
+                const response = await axios.get(`${API_URL}/api/records/`, {
                     withCredentials: true, // Send sessionid cookie
                 });
                 setPosts(response.data); // Expect a list of posts

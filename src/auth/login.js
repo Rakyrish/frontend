@@ -16,6 +16,12 @@ export default function Login() {
   const navigate = useNavigate();
   const { setUsername: setUser } = useUser();
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
+ 
+
+  
+
   useEffect(() => {
     console.log('Login page loaded, initializing Google Sign-In');
   }, []);
@@ -38,7 +44,7 @@ export default function Login() {
     try {
       const csrfToken = getCookie('csrftoken'); // Get CSRF token if needed
       const response = await axios.post(
-        'http://localhost:8000/api/login',
+        `${API_URL}/api/login`,
         { username, email, password },
         {
           headers: {
@@ -71,7 +77,7 @@ export default function Login() {
     try {
       const csrfToken = getCookie('csrftoken');
       const response = await axios.post(
-        'http://localhost:8000/api/google-login',
+          `${API_URL}/api/google-login`,
         { token: credentialResponse.credential },
         {
           headers: {

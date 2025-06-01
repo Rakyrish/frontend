@@ -18,6 +18,8 @@ export default function Create() {
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const API_URL = process.env.REACT_APP_API_URL;
+
     // Utility to get cookie by name
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
@@ -40,7 +42,7 @@ export default function Create() {
         try {
             const csrfToken = getCookie('csrftoken');
             await axios.post(
-                'http://localhost:8000/api/records/',
+                `${API_URL}/api/records/`,
                 { title, body: content },
                 {
                     headers: {

@@ -13,6 +13,7 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Delete() {
     const [recordId, setRecordId] = useState('');
@@ -51,7 +52,7 @@ export default function Delete() {
         try {
             const csrfToken = getCookie('csrftoken');
             await axios.delete(
-                `http://localhost:8000/api/records/${recordId}/`,
+                `${API_URL}/api/records/${recordId}/`,
                 {
                     headers: {
                         ...(csrfToken && { 'X-CSRFToken': csrfToken }),
