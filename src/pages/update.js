@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../auth/context';
 
 export default function Update() {
     const [recordId, setRecordId] = useState('');
@@ -24,7 +23,6 @@ export default function Update() {
     const [loadingUpdate, setLoadingUpdate] = useState(false);
     const [loadingFetch, setLoadingFetch] = useState(false);
     const [step, setStep] = useState(1); // 1: enter ID, 2: edit form
-    const { username } = useUser();
     const navigate = useNavigate();
     const timerRef = useRef();
 

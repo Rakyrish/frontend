@@ -12,14 +12,14 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../auth/context';
+
 
 export default function Delete() {
     const [recordId, setRecordId] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [loadingDelete, setLoadingDelete] = useState(false);
-    const { username } = useUser();
+   
     const navigate = useNavigate();
     const timerRef = useRef();
 

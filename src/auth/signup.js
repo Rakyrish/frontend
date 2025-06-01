@@ -66,11 +66,12 @@ export default function Signup() {
   const handleGoogleSuccess = async (credentialResponse) => {
     console.log('Google token:', credentialResponse.credential);
     try {
-      const response = await axios.post('http://localhost:8000/api/google-signup', {
+       await axios.post('http://localhost:8000/api/google-signup', {
         token: credentialResponse.credential,
       });
       setError('');
       setSuccess('Google signup successful! Redirecting to home...');
+      
       setTimeout(() => navigate('/home'), 1000);
     } catch (err) {
       console.error('Google signup error:', err);
