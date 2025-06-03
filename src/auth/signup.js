@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { Box, Typography, Button, TextField, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
@@ -13,20 +13,14 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [isloading, setIsLoading] = useState(false)
+  const [isloading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {setuser} = useUser();
   
-const API_URL = process.env.REACT_APP_API_URL;
- 
-
-
-
-  useEffect(() => {
-    console.log('Signup page loaded, initializing Google Sign-In on port 5000');
-  }, []);
+  const API_URL = process.env.REACT_APP_API_URL 
 
   const signupB = async () => {
+    setIsLoading(true);
     if (!username || !password || !email || !confirmPassword) {
       setError('All fields are required!');
       return;
@@ -49,7 +43,6 @@ const API_URL = process.env.REACT_APP_API_URL;
       });
       setError('');
       console.log('Signup response:', response.data);
-     setIsLoading(true)
      
       if (response.ok) {
       setSuccess(`Signup successful ${username} ! Redirecting to login...`);
@@ -68,7 +61,7 @@ const API_URL = process.env.REACT_APP_API_URL;
   const handleGoogleSuccess = async (credentialResponse) => {
     console.log('Google token:', credentialResponse.credential);
     try {
-       await axios.post(`${API_URL} api/google-signup`, {
+       await axios.post(`${API_URL}/api/google-signup`, {
         token: credentialResponse.credential,
       });
       setError('');

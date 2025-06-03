@@ -13,7 +13,6 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Delete() {
     const [recordId, setRecordId] = useState('');
@@ -23,7 +22,7 @@ export default function Delete() {
    
     const navigate = useNavigate();
     const timerRef = useRef();
-
+    const API_URL = process.env.REACT_APP_API_URL 
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);

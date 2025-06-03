@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Box, Typography, Button, TextField, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
@@ -16,17 +16,9 @@ export default function Login() {
   const navigate = useNavigate();
   const { setUsername: setUser } = useUser();
 
-  const API_URL = process.env.REACT_APP_API_URL;
+ const API_URL = process.env.REACT_APP_API_URL
 
  
-
-  
-
-  useEffect(() => {
-    console.log('Login page loaded, initializing Google Sign-In');
-  }, []);
-
-  // Utility to get CSRF token from cookies
   const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -40,22 +32,27 @@ export default function Login() {
       setError('Username or email and password are required!');
       return;
     }
-
+   
+   
     try {
-      const csrfToken = getCookie('csrftoken'); // Get CSRF token if needed
+      console.log(`${API_URL}/api/login/`);
+      const csrfToken = getCookie('csrftoken'); 
       const response = await axios.post(
-        `${API_URL}/api/login`,
+        `${API_URL}/api/login/`, 
+        // 'http://127.0.0.1:8000/api/login/',
+        // 'http://localhost:8000/api/login',
+
         { username, email, password },
         {
           headers: {
             'Content-Type': 'application/json',
-            ...(csrfToken && { 'X-CSRFToken': csrfToken }), // Include CSRF if required
+            ...(csrfToken && { 'X-CSRFToken': csrfToken }), 
           },
-          withCredentials: true, // Send sessionid cookie
+          withCredentials: true, 
         }
       );
 
-      setUser(username); // Use username or email for context
+      setUser(username); 
       setError('');
       setSuccess(`Welcome ${username}, Login successful! Redirecting to home...`);
       
@@ -77,7 +74,7 @@ export default function Login() {
     try {
       const csrfToken = getCookie('csrftoken');
       const response = await axios.post(
-          `${API_URL}/api/google-login`,
+        'http://localhost:8000/api/google-login',
         { token: credentialResponse.credential },
         {
           headers: {
@@ -88,21 +85,21 @@ export default function Login() {
         }
       );
 
-      setUser(response.data.data.email); // Use email from Google login response
+      setUser(response.data.data.email);
       setError('');
       setSuccess('Google login successful! Redirecting to home...');
       setTimeout(() => navigate('/home'), 1000);
-      console.log('Google login response:', response.data);
-
     } catch (err) {
       console.error('Google login error:', err.response?.data || err.message);
-      setError(err.response?.data?.message || 'Google login failed. Check console for details.');
+      setError(
+        err.response?.data?.message || 'Google login failed.'
+      );
     }
   };
 
   const handleGoogleFailure = (error) => {
     console.error('Google Sign-In failed:', error);
-    setError('Google Sign-In failed. Ensure Google Client ID is configured correctly.');
+    setError('Google Sign-In failed. Check console for details.');
   };
 
   return (
@@ -117,7 +114,6 @@ export default function Login() {
         }}
       >
         <Box
-          className="login-box"
           sx={{
             backgroundColor: '#ffffff',
             padding: 3,
@@ -152,19 +148,17 @@ export default function Login() {
             helperText={error.includes('Username') || error.includes('required') ? error : ''}
           />
           <TextField
-              label="Email"
-              type="email"
-              variant="outlined"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              sx={{ marginBottom: 2, width: '300px' }}
-              error={error.includes('email') || error.includes('required')}
-              helperText={error.includes('email') || error.includes('required') ? error : ''}
-              InputProps={{
-                autoComplete: 'email', // Suggest email addresses
-              }}
-              name="email" // Ensure consistent field name
-            />
+            label="Email"
+            type="email"
+            variant="outlined"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            sx={{ marginBottom: 2, width: '300px' }}
+            error={error.includes('email') || error.includes('required')}
+            helperText={error.includes('email') || error.includes('required') ? error : ''}
+            InputProps={{ autoComplete: 'email' }}
+            name="email"
+          />
           <TextField
             label="Password"
             type="password"
@@ -175,8 +169,14 @@ export default function Login() {
             error={error.includes('Password') || error.includes('required')}
             helperText={error.includes('Password') || error.includes('required') ? error : ''}
           />
-          <Button variant="contained" color="primary" onClick={loginB} sx={{ marginBottom: 2 }}>
-           {isLoading ? "logging..." : "Login"} 
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={loginB}
+            disabled={isLoading}
+            sx={{ marginBottom: 2 }}
+          >
+            {isLoading ? 'Logging...' : 'Login'}
           </Button>
           <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Typography>Don’t have an account?</Typography>
